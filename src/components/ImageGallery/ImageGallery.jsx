@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes, { arrayOf } from 'prop-types';
 import { Gallery } from './ImageGallery.styled';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 
@@ -10,13 +10,15 @@ const ImageGallery = ({ images }) => {
           key={el.id}
           webFormatURL={el.webformatURL}
           largeImageURL={el.largeImageURL}
-          tag={el.tag}
+          tags={el.tags}
         />
       ))}
     </Gallery>
   );
 };
 
-ImageGallery.propTypes = {};
+ImageGallery.propTypes = {
+  images: arrayOf(PropTypes.object),
+};
 
 export default ImageGallery;

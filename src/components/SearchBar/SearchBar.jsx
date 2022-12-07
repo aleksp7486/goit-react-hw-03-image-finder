@@ -24,7 +24,7 @@ class SearchBar extends Component {
     if (this.state.inputValue === '') {
       return;
     }
-    this.props.onSubmit(this.state.inputValue);
+    this.props.onSubmit(this.state.inputValue.trim());
     // evt.target.reset();
   };
   render() {

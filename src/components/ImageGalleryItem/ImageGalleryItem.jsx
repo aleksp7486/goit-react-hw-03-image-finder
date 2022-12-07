@@ -1,15 +1,7 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Image, Item } from './ImageGalleryItem.styled';
 import Modal from '../Modal';
 import { Component } from 'react';
-
-// const ImageGalleryItem = ({ webFormatURL, largeImageURL }) => {
-//   const handleClick = event => {
-//     console.log(event.target);
-//   };
-
-//   return <Image src={webFormatURL} alt="" onClick={handleClick} />;
-// };
 
 class ImageGalleryItem extends Component {
   state = {
@@ -25,24 +17,30 @@ class ImageGalleryItem extends Component {
   };
 
   render() {
-    const { webFormatURL, largeImageURL, tag } = this.props;
+    const { webFormatURL, largeImageURL, tags } = this.props;
     const { showModal } = this.state;
     return (
       <Item>
-        <Image onClick={this.onClick} src={webFormatURL} alt={tag} />
+        <Image onClick={this.onClick} src={webFormatURL} alt={tags} />
         {showModal && (
           <Modal
             onClick={this.onClick}
             toggleModal={this.toggleModal}
-            imageUrl={largeImageURL}
-            tag={tag}
-          />
+            // imageUrl={largeImageURL}
+            // tag={tag}
+          >
+            <img src={largeImageURL} alt={tags} />
+          </Modal>
         )}
       </Item>
     );
   }
 }
 
-ImageGalleryItem.propTypes = {};
+ImageGalleryItem.propTypes = {
+  webFormatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+};
 
 export default ImageGalleryItem;

@@ -39,7 +39,11 @@ export class App extends Component {
     if (value === this.state.searchValue) {
       return;
     }
-    this.setState({ galleryItems: [], searchValue: value, page: 1 });
+    this.setState({
+      galleryItems: [],
+      searchValue: value,
+      page: 1,
+    });
   };
 
   onLoadButtonClick = () => {

@@ -1,6 +1,9 @@
-// import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import { Overlay, ModalBox } from './Modal.styled';
+
+const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
   componentDidMount() {
@@ -16,17 +19,19 @@ class Modal extends Component {
   };
   closeM;
   render() {
-    const { imageUrl, tag, onClick } = this.props;
-    return (
+    const { children, onClick } = this.props;
+    return createPortal(
       <Overlay onClick={onClick}>
-        <ModalBox>
-          <img src={imageUrl} alt={tag} />
-        </ModalBox>
-      </Overlay>
+        <ModalBox>{children}</ModalBox>
+      </Overlay>,
+      modalRoot
     );
   }
 }
 
-Modal.propTypes = {};
+Modal.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+};
 
 export default Modal;
