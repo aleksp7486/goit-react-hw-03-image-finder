@@ -4,8 +4,7 @@ import SearchBar from 'components/SearchBar';
 import ImageGallery from 'components/ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
-
-import * as Api from 'services/publicationsApi';
+import Api from 'services/publicationsApi';
 
 export class App extends Component {
   state = {
@@ -28,7 +27,7 @@ export class App extends Component {
           galleryItems: [...state.galleryItems, ...images.hits],
         }));
       } catch (error) {
-        console.error('Что-то пошло не так :( ');
+        console.error(error);
       } finally {
         this.setState({ ilLoading: false });
       }
@@ -62,8 +61,6 @@ export class App extends Component {
         {galleryItems.length > 0 && (
           <Button onClick={this.onLoadButtonClick}>Load more</Button>
         )}
-
-        {/* <Modal /> */}
       </AppBox>
     );
   }
