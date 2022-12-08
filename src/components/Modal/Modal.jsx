@@ -14,7 +14,7 @@ class Modal extends Component {
   }
   handleKeyDown = evt => {
     if (evt.code === 'Escape') {
-      this.props.toggleModal();
+      this.props.closeModal();
     }
   };
   render() {
@@ -30,7 +30,7 @@ class Modal extends Component {
 
 Modal.propTypes = {
   onClick: PropTypes.func.isRequired,
-  toggleModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default Modal;
