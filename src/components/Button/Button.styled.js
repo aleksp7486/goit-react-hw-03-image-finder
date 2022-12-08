@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-export const Box = styled.div`
-  text-align: center;
-`;
+
 export const Btn = styled.button`
   padding: 8px 16px;
   border-radius: 2px;

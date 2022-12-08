@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { AppBox } from './App.styled';
+import { Box } from 'utils/Box';
 import SearchBar from 'components/SearchBar';
 import ImageGallery from 'components/ImageGallery';
 import Button from './Button';
@@ -59,7 +60,9 @@ export class App extends Component {
         )}
         {ilLoading && <Loader />}
         {galleryItems.length > 0 && (
-          <Button onClick={this.onLoadButtonClick}>Load more</Button>
+          <Box textAlign="center">
+            <Button onClick={this.onLoadButtonClick}>Load more</Button>
+          </Box>
         )}
       </AppBox>
     );
