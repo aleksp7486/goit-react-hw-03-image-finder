@@ -6,12 +6,14 @@ import ImageGallery from 'components/ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
 import Api from 'services/publicationsApi';
+import Modal from './Modal';
 
 export class App extends Component {
   state = {
-    searchValue: '',
     galleryItems: [],
+    searchValue: '',
     galleryPage: 1,
+    selectedImage: null,
     ilLoading: false,
   };
 
@@ -50,19 +52,36 @@ export class App extends Component {
     this.setState(state => ({ galleryPage: state.galleryPage + 1 }));
   };
 
+  selectModalImage = (url, tags) => {
+    this.setState(() => ({ selectedImage: { url, tags } }));
+  };
+
+  closeModal = () => {
+    this.setState({ selectedImage: null });
+  };
+
   render() {
-    const { galleryItems, ilLoading } = this.state;
+    const { galleryItems, ilLoading, selectedImage } = this.state;
     return (
       <AppBox>
         <SearchBar onSubmit={this.onSearchBarSubmit} />
         {galleryItems.length > 0 && (
-          <ImageGallery images={galleryItems} isLoading={ilLoading} />
+          <ImageGallery
+            onClick={this.selectModalImage}
+            images={galleryItems}
+            isLoading={ilLoading}
+          />
         )}
         {ilLoading && <Loader />}
         {galleryItems.length > 0 && (
           <Box textAlign="center">
             <Button onClick={this.onLoadButtonClick}>Load more</Button>
           </Box>
+        )}
+        {selectedImage && (
+          <Modal closeModal={this.closeModal}>
+            <img src={selectedImage.url} alt={selectedImage.tags} />
+          </Modal>
         )}
       </AppBox>
     );

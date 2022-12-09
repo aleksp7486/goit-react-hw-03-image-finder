@@ -20,11 +20,16 @@ class Modal extends Component {
     }
   };
 
+  handleClick = evt => {
+    if (evt.target === evt.currentTarget) {
+      this.props.closeModal();
+    }
+  };
+
   render() {
-    const { children, onClick } = this.props;
     return createPortal(
-      <Overlay onClick={onClick}>
-        <ModalBox>{children}</ModalBox>
+      <Overlay onClick={this.handleClick}>
+        <ModalBox>{this.props.children}</ModalBox>
       </Overlay>,
       modalRoot
     );
@@ -32,7 +37,6 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
-  onClick: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
