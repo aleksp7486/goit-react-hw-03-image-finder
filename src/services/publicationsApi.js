@@ -1,20 +1,20 @@
-const URL = 'https://pixabay.com/api/';
+import axios from 'axios';
 
-function getImages(value, page) {
+axios.defaults.baseURL = 'https://pixabay.com/api/';
+
+async function getImages(value, page, perPage) {
   const params = new URLSearchParams({
     key: '30931366-a07d02e157d3797ab4f355b57',
     q: `${value}`,
     lang: 'en,ru',
     image_type: 'photo',
     orientation: 'horizontal',
-    per_page: 12,
+    per_page: `${perPage}`,
     page: `${page}`,
   });
-  return fetch(`${URL}?${params}`).then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-  });
+  const response = await axios.get(`?${params}`);
+  console.log(response);
+  return response;
 }
 
 const api = {

@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import { Image, Item } from './ImageGalleryItem.styled';
 
-const ImageGalleryItem = ({ onClick, webFormatURL, largeImageURL, tags }) => {
+const ImageGalleryItem = ({
+  onSelectImage,
+  webFormatURL,
+  largeImageURL,
+  tags,
+}) => {
   return (
     <Item>
       <Image
-        onClick={() => onClick(largeImageURL, tags)}
+        onClick={() => onSelectImage(largeImageURL, tags)}
         src={webFormatURL}
         alt={tags}
       />
@@ -17,7 +22,7 @@ ImageGalleryItem.propTypes = {
   webFormatURL: PropTypes.string.isRequired,
   largeImageURL: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onSelectImage: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;

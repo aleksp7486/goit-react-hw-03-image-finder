@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { AppBox } from './App.styled';
 import { Box } from 'utils/Box';
 import SearchBar from 'components/SearchBar';
@@ -13,21 +14,30 @@ export class App extends Component {
     galleryItems: [],
     query: '',
     page: 1,
+    totalPage: null,
     selectedImage: null,
     ilLoading: false,
   };
 
+  perPage = 15;
+
   async componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
+    const { query, page, totalPage } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       try {
         this.setState({ ilLoading: true });
-        const images = await Api.getImages(query, page);
+        const items = await Api.getImages(query, page, this.perPage);
+        console.log(page);
+        if (items.data.hits.length === 0) {
+          toast.error('Картинки по вашему запросу не найдены');
+          return;
+        }
         this.setState(state => ({
-          galleryItems: [...state.galleryItems, ...images.hits],
+          galleryItems: [...state.galleryItems, ...items.data.hits],
+          totalPage: Math.ceil(items.data.totalHits / this.perPage),
         }));
       } catch (error) {
-        console.error(error);
+        console.warn(error);
       } finally {
         this.setState({ ilLoading: false });
       }
@@ -42,6 +52,7 @@ export class App extends Component {
       galleryItems: [],
       query: value,
       page: 1,
+      totalPage: null,
     });
   };
 
@@ -49,7 +60,7 @@ export class App extends Component {
     this.setState(state => ({ page: state.page + 1 }));
   };
 
-  selectModalImage = (url, tags) => {
+  onSelectImage = (url, tags) => {
     this.setState(() => ({ selectedImage: { url, tags } }));
   };
 
@@ -58,19 +69,20 @@ export class App extends Component {
   };
 
   render() {
-    const { galleryItems, ilLoading, selectedImage } = this.state;
+    const { galleryItems, ilLoading, selectedImage, page, totalPage } =
+      this.state;
     return (
       <AppBox>
         <SearchBar onSubmit={this.onSearchBarSubmit} />
         {galleryItems.length > 0 && (
           <ImageGallery
-            onClick={this.selectModalImage}
+            onSelectImage={this.onSelectImage}
             images={galleryItems}
             isLoading={ilLoading}
           />
         )}
         {ilLoading && <Loader />}
-        {galleryItems.length > 0 && (
+        {galleryItems.length > 0 && page < totalPage && (
           <Box textAlign="center">
             <Button onClick={this.onLoadButtonClick}>Load more</Button>
           </Box>
@@ -80,6 +92,7 @@ export class App extends Component {
             <img src={selectedImage.url} alt={selectedImage.tags} />
           </Modal>
         )}
+        <ToastContainer />
       </AppBox>
     );
   }
