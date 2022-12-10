@@ -13,7 +13,6 @@ async function getImages(value, page, perPage) {
     page: `${page}`,
   });
   const response = await axios.get(`?${params}`);
-  console.log(response);
   return response;
 }
 

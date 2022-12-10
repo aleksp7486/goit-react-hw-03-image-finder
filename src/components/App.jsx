@@ -19,17 +19,22 @@ export class App extends Component {
     ilLoading: false,
   };
 
-  perPage = 15;
+  perPage = 30;
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page, totalPage } = this.state;
+    if (prevState.totalPage !== totalPage || prevState.page !== page) {
+      if (page === totalPage || totalPage === 1) {
+        toast.info('Это все изображения по вашему запросу');
+      }
+    }
+
     if (prevState.query !== query || prevState.page !== page) {
       try {
         this.setState({ ilLoading: true });
         const items = await Api.getImages(query, page, this.perPage);
-        console.log(page);
         if (items.data.hits.length === 0) {
-          toast.error('Картинки по вашему запросу не найдены');
+          toast.error('Изображения по вашему запросу не найдены');
           return;
         }
         this.setState(state => ({
