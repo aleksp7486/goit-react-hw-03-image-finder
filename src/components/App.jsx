@@ -11,21 +11,18 @@ import Modal from './Modal';
 export class App extends Component {
   state = {
     galleryItems: [],
-    searchValue: '',
-    galleryPage: 1,
+    query: '',
+    page: 1,
     selectedImage: null,
     ilLoading: false,
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { searchValue, galleryPage } = this.state;
-    if (
-      prevState.searchValue !== searchValue ||
-      prevState.galleryPage !== galleryPage
-    ) {
+    const { query, page } = this.state;
+    if (prevState.query !== query || prevState.page !== page) {
       try {
         this.setState({ ilLoading: true });
-        const images = await Api.getImages(searchValue, galleryPage);
+        const images = await Api.getImages(query, page);
         this.setState(state => ({
           galleryItems: [...state.galleryItems, ...images.hits],
         }));
@@ -38,18 +35,18 @@ export class App extends Component {
   }
 
   onSearchBarSubmit = async value => {
-    if (value === this.state.searchValue) {
+    if (value === this.state.query) {
       return;
     }
     this.setState({
       galleryItems: [],
-      searchValue: value,
+      query: value,
       page: 1,
     });
   };
 
   onLoadButtonClick = () => {
-    this.setState(state => ({ galleryPage: state.galleryPage + 1 }));
+    this.setState(state => ({ page: state.page + 1 }));
   };
 
   selectModalImage = (url, tags) => {
